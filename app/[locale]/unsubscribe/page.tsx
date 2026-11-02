@@ -1,55 +1,57 @@
 import { unsubscribeFromNewsletter } from "@/actions/newsletter";
+import { Link as I18nLink } from "@/i18n/routing";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type Props = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export default async function UnsubscribePage(props: {
-  searchParams: SearchParams;
-}) {
-  let status: "error" | "success" = "error";
-  let email = "";
-  let errorMessage =
-    "An error occurred while processing your unsubscribe request";
+export const metadata = { robots: { index: false, follow: false } };
 
-  const searchParams = await props.searchParams;
-  const token = searchParams.token as string;
+export default async function UnsubscribePage({ params, searchParams }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("Unsubscribe");
+  const tHeader = await getTranslations("Header");
 
-  if (!token) {
-    errorMessage = "No unsubscribe token provided";
-  } else {
-    try {
-      const result = await unsubscribeFromNewsletter(token);
-      if (result.success) {
-        status = "success";
-        email = result.email;
-      }
-    } catch (error) {
-      errorMessage = error instanceof Error ? error.message : errorMessage;
-    }
-  }
+  const token = (await searchParams).token;
+  const result =
+    typeof token === "string" && token
+      ? await unsubscribeFromNewsletter(token)
+      : ({ success: false, reason: "missing" } as const);
+
+  const errorKey =
+    !result.success &&
+    (result.reason === "missing"
+      ? "missingToken"
+      : result.reason === "invalid_token"
+        ? "invalidToken"
+        : "genericError");
 
   return (
-    <div className="max-w-md mx-auto my-16 p-6 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-6">Email Subscription Management</h1>
-
-      {status === "success" ? (
-        <div>
-          <p className="mb-4">
-            You have successfully unsubscribed from the email notifications.
+    <section className="mx-auto w-full max-w-lg px-4 py-20">
+      <p className="text-sm font-medium text-muted-foreground">{t("title")}</p>
+      {result.success ? (
+        <>
+          <h1 className="mt-2 font-display text-3xl font-bold tracking-tight">
+            {t("successTitle")}
+          </h1>
+          <p className="mt-4 leading-relaxed">{t("successBody", { email: result.email })}</p>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            {t("resubscribe")}{" "}
+            <I18nLink href="/free-pack" className="font-medium text-primary underline underline-offset-4">
+              {tHeader("cta")}
+            </I18nLink>
           </p>
-          <p className="text-sm text-gray-600">Email: {email}</p>
-          <p className="mt-6">
-            If you change your mind, you can re-subscribe at any time.
-          </p>
-        </div>
+        </>
       ) : (
-        <div>
-          <p className="text-red-600 mb-4">{errorMessage}</p>
-          <p>
-            Please ensure you used the correct unsubscribe link, or contact our
-            support team for help.
-          </p>
-        </div>
+        <>
+          <h1 className="mt-2 font-display text-3xl font-bold tracking-tight">{t("errorTitle")}</h1>
+          <p className="mt-4 leading-relaxed">{t(errorKey as string)}</p>
+          <p className="mt-4 leading-relaxed text-muted-foreground">{t("contact")}</p>
+        </>
       )}
-    </div>
+    </section>
   );
 }

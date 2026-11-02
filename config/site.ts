@@ -1,44 +1,37 @@
 import { SiteConfig } from "@/types/siteConfig";
 
-export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nextforge.dev";
-
-export const SOURCE_CODE_URL = "https://github.com/weijunext/nextjs-starter";
-export const PRO_VERSION = "https://nexty.dev";
-
-const TWITTER_URL = 'https://x.com/weijunext'
-const BSKY_URL = 'https://bsky.app/profile/judewei.bsky.social'
-const EMAIL_URL = 'mailto:weijunext@gmail.com'
-const GITHUB_URL = 'https://github.com/weijunext'
-const DISCORD_URL = process.env.NEXT_PUBLIC_DISCORD_INVITE_URL
+// Set NEXT_PUBLIC_SITE_URL in .env once the domain is chosen.
+export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const siteConfig: SiteConfig = {
-  name: "Next Forge",
-  tagLine: 'Multilingual Next.js 16 Starter',
+  name: "Digizenk",
+  tagLine: "AI prompts and tools for small businesses",
   description:
-    "A multilingual Next.js 16 starter with built-in i18n support. Launch your global-ready web application with a clean, efficient, and SEO-friendly foundation.",
+    "Ready-to-use AI prompts, guides and free tools that save small business owners, Etsy sellers and creators hours every week.",
   url: BASE_URL,
   authors: [
     {
-      name: "weijunext",
-      url: "https://weijunext.com",
-    }
+      name: "Digizenk",
+      url: BASE_URL,
+    },
   ],
-  creator: '@weijunext',
+  creator: "@digizenk",
+  // Add profile links here when they're ready. Empty links are hidden.
   socialLinks: {
-    discord: DISCORD_URL,
-    twitter: TWITTER_URL,
-    github: GITHUB_URL,
-    bluesky: BSKY_URL,
-    email: EMAIL_URL
+    youtube: process.env.NEXT_PUBLIC_YOUTUBE_URL,
+    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL,
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL,
+    facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL,
+    email: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
   },
   themeColors: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
+    { media: "(prefers-color-scheme: light)", color: "#F5F6FA" },
+    { media: "(prefers-color-scheme: dark)", color: "#121428" },
   ],
-  defaultNextTheme: 'system', // next-theme option: system | dark | light
+  defaultNextTheme: "system", // system | dark | light
   icons: {
     icon: "/favicon.ico",
     shortcut: "/logo.png",
-    apple: "/logo.png", // apple-touch-icon.png
+    apple: "/logo.png",
   },
-}
+};

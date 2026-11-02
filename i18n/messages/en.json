@@ -1,42 +1,57 @@
 {
   "LanguageDetection": {
-    "title": "Language Suggestion",
-    "description": "We noticed your browser language differs from the current site language. You can switch languages anytime.",
+    "title": "Language suggestion",
+    "description": "Your browser is set to a different language. You can switch the site language at any time.",
     "countdown": "Closing in {countdown} seconds",
     "switchTo": "Switch to"
   },
   "Header": {
     "links": [
       {
-        "name": "Blog",
+        "name": "Guides",
         "href": "/blog"
+      },
+      {
+        "name": "Shop",
+        "href": "/shop"
       },
       {
         "name": "About",
         "href": "/about"
-      },
-      {
-        "name": "Source Code",
-        "href": "https://github.com/weijunext/nextjs-starter",
-        "target": "_blank",
-        "rel": "noopener noreferrer nofollow"
-      },
-      {
-        "name": "Pro Version",
-        "href": "https://nexty.dev",
-        "target": "_blank",
-        "rel": "noopener noreferrer"
       }
-    ]
+    ],
+    "cta": "Get the free pack",
+    "menu": "Open menu"
   },
   "Footer": {
-    "Copyright": "Copyright © {year} {name} All rights reserved.",
+    "Copyright": "© {year} {name}. All rights reserved.",
     "PrivacyPolicy": "Privacy Policy",
     "TermsOfService": "Terms of Service",
     "Links": {
       "groups": [
         {
-          "title": "Languages",
+          "title": "Explore",
+          "links": [
+            {
+              "href": "/blog",
+              "name": "Guides"
+            },
+            {
+              "href": "/shop",
+              "name": "Shop"
+            },
+            {
+              "href": "/free-pack",
+              "name": "Free prompt pack"
+            },
+            {
+              "href": "/about",
+              "name": "About"
+            }
+          ]
+        },
+        {
+          "title": "Language",
           "links": [
             {
               "href": "/en",
@@ -44,89 +59,178 @@
               "useA": true
             },
             {
-              "href": "/zh",
-              "name": "中文",
+              "href": "/es",
+              "name": "Español",
               "useA": true
-            },
-            {
-              "href": "/ja",
-              "name": "日本語",
-              "useA": true
-            }
-          ]
-        },
-        {
-          "title": "Open Source",
-          "links": [
-            {
-              "href": "https://github.com/weijunext/nextjs-starter",
-              "name": "Next Forge",
-              "rel": "noopener noreferrer nofollow",
-              "target": "_blank"
-            },
-            {
-              "href": "https://github.com/weijunext/landing-page-boilerplate",
-              "name": "Landing Page Boilerplate",
-              "rel": "noopener noreferrer nofollow",
-              "target": "_blank"
-            },
-            {
-              "href": "https://github.com/weijunext/weekly-boilerplate",
-              "name": "Blog Boilerplate",
-              "rel": "noopener noreferrer nofollow",
-              "target": "_blank"
-            }
-          ]
-        },
-        {
-          "title": "Other Products",
-          "links": [
-            {
-              "href": "https://nexty.dev/",
-              "name": "Nexty - SaaS Template",
-              "rel": "noopener noreferrer",
-              "target": "_blank"
-            },
-            {
-              "href": "https://ogimage.click/",
-              "name": "OG Image Generator",
-              "rel": "noopener noreferrer",
-              "target": "_blank"
-            },
-            {
-              "href": "https://dofollow.tools/",
-              "name": "Dofollow.Tools",
-              "rel": "noopener noreferrer",
-              "target": "_blank"
             }
           ]
         }
       ]
     },
     "Newsletter": {
-      "title": "Subscribe to our newsletter",
-      "description": "Get the latest news and updates from Next Forge",
-      "defaultErrorMessage": "Please enter a valid email address",
-      "successMessage": "Subscription successful",
-      "errorMessage": "Subscription failed",
-      "errorMessage2": "Subscription failed. Please try again later.",
-      "subscribe": "Subscribe",
-      "subscribing": "Subscribing...",
-      "subscribed": "Subscription successful! Thank you for your attention."
+      "title": "Get the free prompt pack",
+      "description": "25 ready-to-use prompts, plus new guides when they're published.",
+      "placeholder": "you@example.com",
+      "emailLabel": "Email address",
+      "defaultErrorMessage": "Enter a valid email address, like name@example.com.",
+      "errorMessage": "That didn't go through. Try again in a minute.",
+      "subscribe": "Send me the pack",
+      "subscribing": "Sending…",
+      "subscribed": "Done. Check your inbox for the pack.",
+      "tooMany": "Too many sign-ups from this connection today. Try again tomorrow.",
+      "disposable": "Use a permanent email address so the pack doesn't get lost.",
+      "notConfigured": "Sign-ups aren't switched on yet. Check back soon."
     }
   },
   "Home": {
-    "title": "Next Forge",
-    "tagLine": "Multilingual Next.js 16 Starter",
-    "description": "A multilingual Next.js 16 starter with built-in i18n support. Launch your global-ready web application with a clean, efficient, and SEO-friendly foundation."
+    "title": "Digizenk",
+    "tagLine": "AI prompts and tools for small businesses",
+    "description": "Ready-to-use AI prompts, guides and free tools that save small business owners, Etsy sellers and creators hours every week.",
+    "hero": {
+      "headline": "Tell the AI exactly what you need.",
+      "subhead": "Prompts written for real small-business jobs: listings, posts, replies and plans. Pick your business below and copy one to try.",
+      "primary": "Get 25 free prompts",
+      "secondary": "Browse the shop"
+    },
+    "demo": {
+      "label": "Prompt builder",
+      "businessLabel": "Your business",
+      "goalLabel": "What you need",
+      "copy": "Copy prompt",
+      "copied": "Copied",
+      "hint": "Paste it into ChatGPT, Claude or Gemini. The highlighted parts are the bits you'd change.",
+      "niches": [
+        {
+          "id": "realestate",
+          "label": "Real estate",
+          "niche": "real estate agent",
+          "audience": "first-time home buyers in my city",
+          "tone": "warm and trustworthy"
+        },
+        {
+          "id": "etsy",
+          "label": "Etsy shop",
+          "niche": "handmade jewelry Etsy shop",
+          "audience": "people shopping for meaningful gifts",
+          "tone": "friendly and personal"
+        },
+        {
+          "id": "restaurant",
+          "label": "Restaurant",
+          "niche": "family-owned Mexican restaurant",
+          "audience": "local families and lunch crowds",
+          "tone": "fun and welcoming"
+        },
+        {
+          "id": "coach",
+          "label": "Fitness coach",
+          "niche": "online fitness coach",
+          "audience": "busy parents who want to get fit at home",
+          "tone": "encouraging and direct"
+        }
+      ],
+      "goals": [
+        {
+          "id": "social",
+          "label": "A week of posts",
+          "template": "Act as a social media strategist for a {niche}. Plan 7 days of Instagram posts aimed at {audience}. For each day, give me a hook, a caption under 120 words and 5 relevant hashtags. Keep the tone {tone}."
+        },
+        {
+          "id": "review",
+          "label": "Reply to a review",
+          "template": "I run a {niche}. Write a reply to a customer review that I'll paste below. Thank them by name, address their main point, and invite them back. Keep it {tone}, under 80 words, and written for {audience} who may read it later."
+        },
+        {
+          "id": "offer",
+          "label": "Describe my offer",
+          "template": "Write a short description of my main offer as a {niche}. It's for {audience}. Lead with the problem it solves, list 3 concrete benefits, and end with a clear next step. Keep the tone {tone} and avoid buzzwords."
+        }
+      ]
+    },
+    "products": {
+      "title": "Prompt packs and printables",
+      "intro": "Each pack is built around one kind of business, so the prompts fit your work without rewriting.",
+      "all": "See everything in the shop"
+    },
+    "guides": {
+      "title": "Latest guides",
+      "intro": "Step-by-step how-tos with prompts you can copy.",
+      "empty": "The first guides are being written now. Get the free pack and you'll hear when they're published.",
+      "all": "All guides"
+    },
+    "signup": {
+      "title": "Start with 25 free prompts",
+      "body": "Five prompts each for marketing, customer service, product descriptions, planning and social media. Sent to your inbox, free."
+    }
+  },
+  "Product": {
+    "buyOn": "View on {store}",
+    "comingSoon": "Link coming soon",
+    "stores": {
+      "etsy": "Etsy",
+      "hotmart": "Hotmart"
+    }
+  },
+  "Shop": {
+    "title": "Shop",
+    "description": "Digizenk prompt packs, printables and digital art.",
+    "intro": "Everything here is a digital download. Checkout happens on Etsy or Hotmart, so your payment and download are handled by a store you already know.",
+    "categories": {
+      "prompts": "AI prompt packs",
+      "content": "Content creation",
+      "art": "Wall art",
+      "planners": "Planners",
+      "food": "Recipes"
+    }
+  },
+  "FreePack": {
+    "title": "Free prompt pack",
+    "description": "Get 25 ready-to-use AI prompts for small businesses, free.",
+    "headline": "25 prompts that take care of the weekly busywork",
+    "body": "Copy them into ChatGPT, Claude or Gemini, fill in the highlighted parts, and get a usable first draft in seconds.",
+    "insideTitle": "What's inside",
+    "inside": [
+      {
+        "title": "Marketing",
+        "body": "Promotions, email campaigns and seasonal offers."
+      },
+      {
+        "title": "Customer service",
+        "body": "Replies to reviews, complaints and common questions."
+      },
+      {
+        "title": "Product descriptions",
+        "body": "Listings that explain the benefit, not just the features."
+      },
+      {
+        "title": "Planning",
+        "body": "Weekly priorities, launch checklists and content calendars."
+      },
+      {
+        "title": "Social media",
+        "body": "Hooks, captions and post ideas for a full week."
+      }
+    ],
+    "privacy": "One email with the pack, then occasional new guides. Unsubscribe with one click."
+  },
+  "Unsubscribe": {
+    "title": "Email preferences",
+    "successTitle": "You're unsubscribed",
+    "successBody": "{email} won't receive any more emails from Digizenk.",
+    "resubscribe": "Changed your mind? You can sign up again on the free pack page.",
+    "errorTitle": "We couldn't unsubscribe you",
+    "missingToken": "This link is missing its unsubscribe code. Use the link from the bottom of any Digizenk email.",
+    "invalidToken": "This unsubscribe link isn't valid. Use the link from the bottom of the most recent Digizenk email.",
+    "genericError": "Something went wrong on our side. Try the link again in a few minutes.",
+    "contact": "Still having trouble? Reply to any Digizenk email and we'll remove you by hand."
   },
   "Blog": {
-    "title": "Blog Posts",
-    "description": "A list of blog posts"
+    "title": "Guides",
+    "description": "Step-by-step AI guides with prompts you can copy, for small businesses, Etsy sellers and creators."
   },
   "About": {
     "title": "About",
-    "description": "About the site"
+    "description": "About Digizenk"
   },
   "TermsOfService": {
     "title": "Terms of Service",

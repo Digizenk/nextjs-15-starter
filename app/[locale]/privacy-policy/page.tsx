@@ -61,7 +61,7 @@ export default async function AboutPage({ params }: { params: Params }) {
   const content = await getMDXContent(locale);
 
   return (
-    <article className="w-full md:w-3/5 px-2 md:px-12">
+    <article className="mx-auto w-full max-w-3xl px-4 pt-6 pb-20 sm:px-6">
       <MDXRemote
         source={content}
         components={MDXComponents}

@@ -1,74 +1,115 @@
-import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
-import { MousePointerClick } from "lucide-react";
-import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { SiDiscord } from "react-icons/si";
+import { BlogCard } from "@/app/[locale]/blog/BlogCard";
+import { PromptBuilder } from "@/components/home/PromptBuilder";
+import { ProductList } from "@/components/ProductList";
+import { buttonVariants } from "@/components/ui/button";
+import { products } from "@/config/products";
+import { Link as I18nLink } from "@/i18n/routing";
+import { getPosts } from "@/lib/getBlogs";
+import { cn } from "@/lib/utils";
+import { getTranslations } from "next-intl/server";
 
-export default function HomeComponent() {
-  const t = useTranslations("Home");
+function SectionHeading({
+  title,
+  intro,
+  href,
+  linkLabel,
+}: {
+  title: string;
+  intro: string;
+  href: string;
+  linkLabel: string;
+}) {
+  return (
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div className="max-w-xl">
+        <h2 className="font-display text-3xl font-bold tracking-tight">{title}</h2>
+        <p className="mt-2 leading-relaxed text-muted-foreground">{intro}</p>
+      </div>
+      <I18nLink
+        href={href}
+        className="shrink-0 font-semibold text-primary underline-offset-4 hover:underline"
+      >
+        {linkLabel}
+      </I18nLink>
+    </div>
+  );
+}
+
+export default async function HomeComponent({ locale }: { locale: string }) {
+  const t = await getTranslations("Home");
+  const { posts } = await getPosts(locale);
+  const featured = products.filter((p) => p.featured);
 
   return (
     <>
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16 pt-24 text-center">
-        <h1 className="mx-auto max-w-4xl font-display text-5xl font-bold tracking-tight text-slate-900 sm:text-7xl dark:text-gray-200">
-          Next.js{" "}
-          <span className="relative whitespace-nowrap text-blue-600">
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 418 42"
-              className="absolute left-0 top-2/3 h-[0.58em] w-full fill-blue-300/70"
-              preserveAspectRatio="none"
+      <section className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 pt-12 pb-16 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-14 lg:px-8 lg:pt-20 lg:pb-24">
+        <div>
+          <h1 className="font-display text-[2.75rem] font-extrabold leading-[1.02] tracking-[-0.03em] sm:text-6xl lg:text-[4.25rem]">
+            {t("hero.headline")}
+          </h1>
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+            {t("hero.subhead")}
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <I18nLink
+              href="/free-pack"
+              className={cn(buttonVariants({ size: "lg" }), "h-12 px-6 text-base font-semibold")}
             >
-              <path d="M203.371.916c-26.013-2.078-76.686 1.963-124.73 9.946L67.3 12.749C35.421 18.062 18.2 21.766 6.004 25.934 1.244 27.561.828 27.778.874 28.61c.07 1.214.828 1.121 9.595-1.176 9.072-2.377 17.15-3.92 39.246-7.496C123.565 7.986 157.869 4.492 195.942 5.046c7.461.108 19.25 1.696 19.17 2.582-.107 1.183-7.874 4.31-25.75 10.366-21.992 7.45-35.43 12.534-36.701 13.884-2.173 2.308-.202 4.407 4.442 4.734 2.654.187 3.263.157 15.593-.78 35.401-2.686 57.944-3.488 88.365-3.143 46.327.526 75.721 2.23 130.788 7.584 19.787 1.924 20.814 1.98 24.557 1.332l.066-.011c1.201-.203 1.53-1.825.399-2.335-2.911-1.31-4.893-1.604-22.048-3.261-57.509-5.556-87.871-7.36-132.059-7.842-23.239-.254-33.617-.116-50.627.674-11.629.54-42.371 2.494-46.696 2.967-2.359.259 8.133-3.625 26.504-9.81 23.239-7.825 27.934-10.149 28.304-14.005.417-4.348-3.529-6-16.878-7.066Z"></path>
-            </svg>
-            <span className="relative"> i18n </span>{" "}
-          </span>
-          Starter
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-2xl tracking-tight text-slate-700 dark:text-slate-500">
-          {t("description")}
-        </p>
-
-        <div className="mt-10 flex items-center justify-center gap-2">
-          <Button
-            className="h-11 rounded-xl px-8 py-2 bg-white text-indigo-500 hover:text-indigo-600 border-2 border-indigo-500"
-            variant="outline"
-            asChild
-          >
-            <Link
-              href="https://nexty.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Get SaaS Version - Nexty.dev"
-              prefetch={false}
-              className="flex items-center gap-2"
+              {t("hero.primary")}
+            </I18nLink>
+            <I18nLink
+              href="/shop"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "h-12 border-foreground/30 px-6 text-base font-semibold"
+              )}
             >
-              <MousePointerClick className="w-4 h-4 text-indigo-500" />
-              Get SaaS Version
-            </Link>
-          </Button>
-          <Button
-            className="h-11 rounded-xl px-8 py-2 bg-white text-indigo-500 hover:text-indigo-600 border-2 border-indigo-500"
-            variant="outline"
-            asChild
-          >
-            <Link
-              href={
-                siteConfig.socialLinks?.discord ||
-                "https://discord.com/invite/R7bUxWKRqZ"
-              }
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              title="Join Discord"
-              prefetch={false}
-              className="flex items-center gap-2"
-            >
-              <SiDiscord className="w-4 h-4 text-indigo-500" />
-              Join Discord
-            </Link>
-          </Button>
+              {t("hero.secondary")}
+            </I18nLink>
+          </div>
         </div>
+
+        <PromptBuilder />
+      </section>
+
+      <section className="w-full border-t border-border bg-card/60 py-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            title={t("products.title")}
+            intro={t("products.intro")}
+            href="/shop"
+            linkLabel={t("products.all")}
+          />
+          <div className="mt-8">
+            <ProductList products={featured} locale={locale} />
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+        <SectionHeading
+          title={t("guides.title")}
+          intro={t("guides.intro")}
+          href="/blog"
+          linkLabel={t("guides.all")}
+        />
+        {posts.length > 0 ? (
+          <div className="mt-8 grid border-b border-border md:grid-cols-3 md:gap-x-10">
+            {posts.slice(0, 3).map((post) => (
+              <BlogCard key={post.slug} post={post} locale={locale} />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-8 rounded-lg border border-dashed border-input p-6">
+            <p className="max-w-lg leading-relaxed">{t("guides.empty")}</p>
+            <I18nLink
+              href="/free-pack"
+              className="mt-3 inline-block font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              {t("hero.primary")}
+            </I18nLink>
+          </div>
+        )}
       </section>
     </>
   );

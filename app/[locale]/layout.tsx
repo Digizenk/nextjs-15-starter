@@ -1,4 +1,3 @@
-import BaiDuAnalytics from "@/app/BaiDuAnalytics";
 import GoogleAdsense from "@/app/GoogleAdsense";
 import GoogleAnalytics from "@/app/GoogleAnalytics";
 import PlausibleAnalytics from "@/app/PlausibleAnalytics";
@@ -41,6 +40,10 @@ export async function generateMetadata({
     path: `/`,
     canonicalUrl: `/`,
   });
+}
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
 }
 
 export const viewport: Viewport = {
@@ -97,7 +100,6 @@ export default async function LocaleLayout({
         ) : (
           <>
             <Analytics />
-            <BaiDuAnalytics />
             <GoogleAnalytics />
             <GoogleAdsense />
             <PlausibleAnalytics />

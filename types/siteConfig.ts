@@ -14,11 +14,10 @@ export type SiteConfig = {
   url: string
   authors: AuthorsConfig[]
   socialLinks?: {
-    github?: string
-    bluesky?: string
-    twitter?: string
-    twitterZh?: string
-    discord?: string
+    youtube?: string
+    tiktok?: string
+    instagram?: string
+    facebook?: string
     email?: string
   }
   creator: string

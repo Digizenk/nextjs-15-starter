@@ -1,0 +1,243 @@
+{
+  "LanguageDetection": {
+    "title": "Sugerencia de idioma",
+    "description": "Tu navegador está en otro idioma. Puedes cambiar el idioma del sitio cuando quieras.",
+    "countdown": "Se cierra en {countdown} segundos",
+    "switchTo": "Cambiar a"
+  },
+  "Header": {
+    "links": [
+      {
+        "name": "Guías",
+        "href": "/blog"
+      },
+      {
+        "name": "Tienda",
+        "href": "/shop"
+      },
+      {
+        "name": "Nosotros",
+        "href": "/about"
+      }
+    ],
+    "cta": "Paquete gratis",
+    "menu": "Abrir menú"
+  },
+  "Footer": {
+    "Copyright": "© {year} {name}. Todos los derechos reservados.",
+    "PrivacyPolicy": "Política de privacidad",
+    "TermsOfService": "Términos del servicio",
+    "Links": {
+      "groups": [
+        {
+          "title": "Explorar",
+          "links": [
+            {
+              "href": "/blog",
+              "name": "Guías"
+            },
+            {
+              "href": "/shop",
+              "name": "Tienda"
+            },
+            {
+              "href": "/free-pack",
+              "name": "Paquete de prompts gratis"
+            },
+            {
+              "href": "/about",
+              "name": "Nosotros"
+            }
+          ]
+        },
+        {
+          "title": "Idioma",
+          "links": [
+            {
+              "href": "/en",
+              "name": "English",
+              "useA": true
+            },
+            {
+              "href": "/es",
+              "name": "Español",
+              "useA": true
+            }
+          ]
+        }
+      ]
+    },
+    "Newsletter": {
+      "title": "Recibe el paquete de prompts gratis",
+      "description": "25 prompts listos para usar, y las guías nuevas cuando se publiquen.",
+      "placeholder": "tu@correo.com",
+      "emailLabel": "Correo electrónico",
+      "defaultErrorMessage": "Escribe un correo válido, como nombre@ejemplo.com.",
+      "errorMessage": "No se pudo enviar. Inténtalo de nuevo en un minuto.",
+      "subscribe": "Envíame el paquete",
+      "subscribing": "Enviando…",
+      "subscribed": "Listo. Revisa tu correo para descargar el paquete.",
+      "tooMany": "Demasiados registros desde esta conexión hoy. Inténtalo mañana.",
+      "disposable": "Usa un correo permanente para que el paquete no se pierda.",
+      "notConfigured": "Los registros aún no están activados. Vuelve pronto."
+    }
+  },
+  "Home": {
+    "title": "Digizenk",
+    "tagLine": "Prompts y herramientas de IA para pequeños negocios",
+    "description": "Prompts de IA listos para usar, guías y herramientas gratis que ahorran horas cada semana a dueños de negocios, vendedores de Etsy y creadores.",
+    "hero": {
+      "headline": "Dile a la IA exactamente lo que necesitas.",
+      "subhead": "Prompts escritos para tareas reales de un pequeño negocio: anuncios, publicaciones, respuestas y planes. Elige tu negocio abajo y copia uno para probarlo.",
+      "primary": "Recibe 25 prompts gratis",
+      "secondary": "Ver la tienda"
+    },
+    "demo": {
+      "label": "Generador de prompts",
+      "businessLabel": "Tu negocio",
+      "goalLabel": "Lo que necesitas",
+      "copy": "Copiar prompt",
+      "copied": "Copiado",
+      "hint": "Pégalo en ChatGPT, Claude o Gemini. Las partes resaltadas son las que cambiarías.",
+      "niches": [
+        {
+          "id": "realestate",
+          "label": "Bienes raíces",
+          "niche": "agente inmobiliario",
+          "audience": "personas que compran su primera casa en mi ciudad",
+          "tone": "cálido y confiable"
+        },
+        {
+          "id": "etsy",
+          "label": "Tienda en Etsy",
+          "niche": "tienda de joyería hecha a mano en Etsy",
+          "audience": "personas que buscan un regalo especial",
+          "tone": "cercano y personal"
+        },
+        {
+          "id": "restaurant",
+          "label": "Restaurante",
+          "niche": "restaurante familiar de comida dominicana",
+          "audience": "familias del barrio y gente que sale a almorzar",
+          "tone": "alegre y acogedor"
+        },
+        {
+          "id": "coach",
+          "label": "Entrenador fitness",
+          "niche": "entrenador fitness en línea",
+          "audience": "padres ocupados que quieren ponerse en forma en casa",
+          "tone": "motivador y directo"
+        }
+      ],
+      "goals": [
+        {
+          "id": "social",
+          "label": "Una semana de posts",
+          "template": "Actúa como estratega de redes sociales para un {niche}. Planifica 7 días de publicaciones de Instagram dirigidas a {audience}. Para cada día, dame un gancho, un texto de menos de 120 palabras y 5 hashtags relevantes. Mantén un tono {tone}."
+        },
+        {
+          "id": "review",
+          "label": "Responder una reseña",
+          "template": "Tengo un {niche}. Escribe una respuesta a la reseña de un cliente que pegaré abajo. Agradécele por su nombre, responde a su punto principal e invítalo a volver. Que sea {tone}, de menos de 80 palabras y pensada para {audience} que la lean después."
+        },
+        {
+          "id": "offer",
+          "label": "Describir mi oferta",
+          "template": "Escribe una descripción breve de mi oferta principal como {niche}. Es para {audience}. Empieza por el problema que resuelve, enumera 3 beneficios concretos y termina con un siguiente paso claro. Mantén un tono {tone} y evita las palabras de moda."
+        }
+      ]
+    },
+    "products": {
+      "title": "Paquetes de prompts e imprimibles",
+      "intro": "Cada paquete está pensado para un tipo de negocio, así los prompts encajan con tu trabajo sin reescribirlos.",
+      "all": "Ver todo en la tienda"
+    },
+    "guides": {
+      "title": "Guías recientes",
+      "intro": "Tutoriales paso a paso con prompts que puedes copiar.",
+      "empty": "Estamos escribiendo las primeras guías. Recibe el paquete gratis y te avisaremos cuando se publiquen.",
+      "all": "Todas las guías"
+    },
+    "signup": {
+      "title": "Empieza con 25 prompts gratis",
+      "body": "Cinco prompts para cada área: marketing, atención al cliente, descripciones de productos, planificación y redes sociales. Gratis, directo a tu correo."
+    }
+  },
+  "Product": {
+    "buyOn": "Ver en {store}",
+    "comingSoon": "Enlace disponible pronto",
+    "stores": {
+      "etsy": "Etsy",
+      "hotmart": "Hotmart"
+    }
+  },
+  "Shop": {
+    "title": "Tienda",
+    "description": "Paquetes de prompts, imprimibles y arte digital de Digizenk.",
+    "intro": "Todo es descarga digital. El pago se hace en Hotmart o Etsy, así que tu compra y tu descarga las gestiona una tienda que ya conoces.",
+    "categories": {
+      "prompts": "Paquetes de prompts de IA",
+      "content": "Creación de contenido",
+      "art": "Arte para pared",
+      "planners": "Planificadores",
+      "food": "Recetas"
+    }
+  },
+  "FreePack": {
+    "title": "Paquete de prompts gratis",
+    "description": "Recibe gratis 25 prompts de IA listos para usar en tu pequeño negocio.",
+    "headline": "25 prompts que se encargan del trabajo repetitivo de la semana",
+    "body": "Cópialos en ChatGPT, Claude o Gemini, completa las partes resaltadas y obtén un primer borrador útil en segundos.",
+    "insideTitle": "Qué incluye",
+    "inside": [
+      {
+        "title": "Marketing",
+        "body": "Promociones, campañas por correo y ofertas de temporada."
+      },
+      {
+        "title": "Atención al cliente",
+        "body": "Respuestas a reseñas, quejas y preguntas frecuentes."
+      },
+      {
+        "title": "Descripciones de productos",
+        "body": "Anuncios que explican el beneficio, no solo las características."
+      },
+      {
+        "title": "Planificación",
+        "body": "Prioridades semanales, listas para lanzamientos y calendarios de contenido."
+      },
+      {
+        "title": "Redes sociales",
+        "body": "Ganchos, textos e ideas de publicaciones para una semana completa."
+      }
+    ],
+    "privacy": "Un correo con el paquete y, de vez en cuando, guías nuevas. Te das de baja con un clic."
+  },
+  "Unsubscribe": {
+    "title": "Preferencias de correo",
+    "successTitle": "Te diste de baja",
+    "successBody": "{email} ya no recibirá correos de Digizenk.",
+    "resubscribe": "¿Cambiaste de opinión? Puedes volver a suscribirte en la página del paquete gratis.",
+    "errorTitle": "No pudimos darte de baja",
+    "missingToken": "A este enlace le falta el código para darte de baja. Usa el enlace que aparece al final de cualquier correo de Digizenk.",
+    "invalidToken": "Este enlace para darte de baja no es válido. Usa el enlace del correo más reciente de Digizenk.",
+    "genericError": "Algo falló de nuestro lado. Prueba el enlace de nuevo en unos minutos.",
+    "contact": "¿Sigues con problemas? Responde a cualquier correo de Digizenk y te daremos de baja manualmente."
+  },
+  "Blog": {
+    "title": "Guías",
+    "description": "Guías de IA paso a paso con prompts para copiar, para pequeños negocios, vendedores de Etsy y creadores."
+  },
+  "About": {
+    "title": "Nosotros",
+    "description": "Sobre Digizenk"
+  },
+  "TermsOfService": {
+    "title": "Términos del servicio",
+    "description": "Términos del servicio"
+  },
+  "PrivacyPolicy": {
+    "title": "Política de privacidad",
+    "description": "Política de privacidad"
+  }
+}

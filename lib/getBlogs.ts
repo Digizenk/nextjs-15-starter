@@ -14,7 +14,7 @@ export async function getPosts(locale: string = DEFAULT_LOCALE): Promise<{ posts
     return { posts: [] };
   }
 
-  let filenames = await fs.promises.readdir(postsDirectory);
+  let filenames = (await fs.promises.readdir(postsDirectory)).filter((name) => name.endsWith('.mdx'));
   filenames = filenames.reverse();
 
   let allPosts: BlogPost[] = [];

@@ -1,48 +1,38 @@
 import HeaderLinks from "@/components/header/HeaderLinks";
 import MobileMenu from "@/components/header/MobileMenu";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
+import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { siteConfig } from "@/config/site";
+import { buttonVariants } from "@/components/ui/button";
 import { Link as I18nLink } from "@/i18n/routing";
+import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 
 const Header = () => {
-  const t = useTranslations("Home");
+  const t = useTranslations("Header");
 
   return (
-    <header className="py-2 px-6 backdrop-blur-md sticky top-0 z-50">
-      <nav className="flex justify-between items-center w-full mx-auto">
-        <div className="flex items-center space-x-6 md:space-x-12">
-          <I18nLink
-            href="/"
-            prefetch={false}
-            className="flex items-center space-x-1 font-bold"
-          >
-            <Image
-              alt={siteConfig.name}
-              src="/logo.svg"
-              className="w-6 h-6"
-              width={32}
-              height={32}
-            />
-            <span className="text-gray-800 dark:text-gray-200">
-              {t("title")}
-            </span>
+    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-md">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-8">
+          <I18nLink href="/" prefetch={false} aria-label="Digizenk home" className="rounded-md">
+            <Logo />
           </I18nLink>
           <HeaderLinks />
         </div>
 
-        <div className="flex items-center gap-x-2 md:gap-x-4 lg:gap-x-6 flex-1 justify-end">
-          {/* PC */}
-          <div className="hidden md:flex items-center gap-x-4">
-            <LocaleSwitcher />
-            <ThemeToggle />
-          </div>
-
-          {/* Mobile */}
-          <MobileMenu />
+        <div className="hidden items-center gap-2 md:flex">
+          <LocaleSwitcher />
+          <ThemeToggle />
+          <I18nLink
+            href="/free-pack"
+            className={cn(buttonVariants(), "ml-2 h-10 px-4 font-semibold")}
+          >
+            {t("cta")}
+          </I18nLink>
         </div>
+
+        <MobileMenu />
       </nav>
     </header>
   );

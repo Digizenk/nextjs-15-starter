@@ -57,26 +57,21 @@ export default async function BlogPage({ params }: { params: Params }) {
   }
 
   return (
-    <div className="w-full md:w-3/5 px-2 md:px-12">
-      <h1 className="break-words text-4xl font-bold mt-6 mb-4">{post.title}</h1>
+    <div className="mx-auto w-full max-w-3xl px-4 pt-6 pb-20 sm:px-6">
+      <h1 className="mt-6 break-words font-display text-4xl font-bold tracking-tight sm:text-5xl">
+        {post.title}
+      </h1>
       {post.image && (
-        <img src={post.image} alt={post.title} className="rounded-sm" />
+        <img src={post.image} alt="" className="mt-8 rounded-lg border border-border" />
       )}
-      {post.tags && post.tags.split(",").length ? (
-        <div className="flex flex-wrap gap-2">
-          {post.tags.split(",").map((tag) => {
-            return (
-              <div
-                key={tag}
-                className={`rounded-md bg-gray-200 hover:!no-underline dark:bg-[#24272E] flex px-2.5 py-1.5 text-sm font-medium transition-colors hover:text-black hover:dark:bg-[#15AFD04C] hover:dark:text-[#82E9FF] text-gray-500 dark:text-[#7F818C] outline-none focus-visible:ring transition`}
-              >
-                {tag.trim()}
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <></>
+      {post.tags && (
+        <ul className="mt-5 flex flex-wrap gap-2">
+          {post.tags.split(",").map((tag) => (
+            <li key={tag} className="rounded-md bg-muted px-2.5 py-1 text-sm text-muted-foreground">
+              {tag.trim()}
+            </li>
+          ))}
+        </ul>
       )}
       {post.description && <Callout>{post.description}</Callout>}
       <MDXRemote source={post?.content || ""} components={MDXComponents} />
@@ -85,19 +80,13 @@ export default async function BlogPage({ params }: { params: Params }) {
 }
 
 export async function generateStaticParams() {
-  let posts = (await getPosts()).posts;
-
-  // Filter out posts without a slug
-  posts = posts.filter((post) => post.slug);
-
-  return LOCALES.flatMap((locale) =>
-    posts.map((post) => {
-      const slugPart = post.slug.replace(/^\//, "").replace(/^blog\//, "");
-
-      return {
-        locale,
-        slug: slugPart,
-      };
+  const perLocale = await Promise.all(
+    LOCALES.map(async (locale) => {
+      const { posts } = await getPosts(locale);
+      return posts
+        .filter((post) => post.slug)
+        .map((post) => ({ locale, slug: post.slug.replace(/^\//, "").replace(/^blog\//, "") }));
     })
   );
+  return perLocale.flat();
 }

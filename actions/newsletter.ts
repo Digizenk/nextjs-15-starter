@@ -1,125 +1,157 @@
-import { normalizeEmail, validateEmail } from '@/lib/email';
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
-import { headers } from 'next/headers';
-import { Resend } from 'resend';
+import { normalizeEmail, validateEmail } from "@/lib/email";
+import { createUnsubscribeToken, verifyUnsubscribeToken } from "@/lib/unsubscribe-token";
+import { siteConfig } from "@/config/site";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+import { headers } from "next/headers";
+import { Resend } from "resend";
 
-// initialize resend
-const resend = new Resend(process.env.RESEND_API_KEY);
+/** Thrown when the email service keys haven't been added to .env yet. */
+export class NewsletterNotConfiguredError extends Error {
+  constructor() {
+    super("Newsletter is not configured. Add RESEND_API_KEY and ADMIN_EMAIL to .env.");
+  }
+}
 
-// Resend Audience ID
-const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID!;
+/** Thrown for problems the visitor can fix (bad address, too many tries). */
+export class NewsletterInputError extends Error {}
 
-// initialize Redis
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-});
+// Clients are created on first use, not at import time, so the site still
+// builds and runs before the email/rate-limit keys are added.
+let resend: Resend | null = null;
+function getResend(): Resend {
+  if (!process.env.RESEND_API_KEY || !process.env.ADMIN_EMAIL) {
+    throw new NewsletterNotConfiguredError();
+  }
+  resend ??= new Resend(process.env.RESEND_API_KEY);
+  return resend;
+}
 
-const REDIS_RATE_LIMIT_KEY = process.env.UPSTASH_REDIS_NEWSLETTER_RATE_LIMIT_KEY!;
-const DAY_MAX_SUBMISSIONS = parseInt(process.env.DAY_MAX_SUBMISSIONS || '10');
+let limiter: Ratelimit | null | undefined;
+function getLimiter(): Ratelimit | null {
+  if (limiter !== undefined) return limiter;
+  const { UPSTASH_REDIS_REST_URL: url, UPSTASH_REDIS_REST_TOKEN: token } = process.env;
+  limiter =
+    url && token
+      ? new Ratelimit({
+          redis: new Redis({ url, token }),
+          limiter: Ratelimit.slidingWindow(parseInt(process.env.DAY_MAX_SUBMISSIONS || "10"), "1d"),
+          prefix: process.env.UPSTASH_REDIS_NEWSLETTER_RATE_LIMIT_KEY || "newsletter-rate-limit",
+        })
+      : null;
+  return limiter;
+}
 
-// create rate limiter
-const limiter = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(DAY_MAX_SUBMISSIONS, '1d'),
-  prefix: REDIS_RATE_LIMIT_KEY,
-});
-
-// Shared rate limit check
 async function checkRateLimit() {
+  const rateLimiter = getLimiter();
+  if (!rateLimiter) return; // rate limiting is optional until Upstash is set up
+
   const headersList = await headers();
-  const ip = headersList.get('x-real-ip') ||
-    headersList.get('x-forwarded-for') ||
-    'unknown';
+  const ip =
+    headersList.get("x-real-ip") ||
+    headersList.get("x-forwarded-for")?.split(",")[0].trim() ||
+    "unknown";
 
-  const { success } = await limiter.limit(ip);
+  const { success } = await rateLimiter.limit(ip);
   if (!success) {
-    throw new Error('Too many submissions, please try again later');
+    throw new NewsletterInputError("too_many_requests");
   }
 }
 
-export async function subscribeToNewsletter(email: string) {
-  try {
-    await checkRateLimit();
+function welcomeEmail(locale: string, unsubscribeLink: string) {
+  const packUrl = process.env.FREE_PACK_URL;
+  const es = locale === "es";
 
-    const normalizedEmail = normalizeEmail(email);
-    const { isValid, error } = validateEmail(normalizedEmail);
+  const subject = es ? "Tu paquete de 25 prompts gratis" : "Your 25 free prompts";
+  const intro = es
+    ? "Gracias por suscribirte. Aquí tienes tu paquete de 25 prompts de IA para pequeños negocios."
+    : "Thanks for signing up. Here's your pack of 25 AI prompts for small businesses.";
+  const button = es ? "Descargar el paquete" : "Download the pack";
+  const pending = es
+    ? "Te enviaremos el enlace de descarga muy pronto."
+    : "We'll send your download link very shortly.";
+  const outro = es
+    ? "De vez en cuando te escribiremos cuando publiquemos guías nuevas."
+    : "Every so often we'll write when new guides are published.";
+  const unsubscribe = es ? "Darte de baja" : "Unsubscribe";
 
-    if (!isValid) {
-      throw new Error(error || 'Invalid email address');
-    }
-
-    // Check if already subscribed
-    // const list = await resend.contacts.list({ audienceId: AUDIENCE_ID });
-    // const user = list.data?.data.find((item) => item.email === normalizedEmail);
-    // if (user) {
-    //   return { success: true, alreadySubscribed: true };
-    // }
-
-    // Add to audience
-    await resend.contacts.create({
-      audienceId: AUDIENCE_ID,
-      email: normalizedEmail,
-    });
-
-    // Send welcome email
-    const unsubscribeToken = Buffer.from(normalizedEmail).toString('base64');
-    const unsubscribeLink = `${process.env.NEXT_PUBLIC_SITE_URL}/unsubscribe?token=${unsubscribeToken}`;
-
-    await resend.emails.send({
-      from: 'NextForge <' + process.env.ADMIN_EMAIL! + '>',
-      to: normalizedEmail,
-      subject: 'Welcome to Next Forge',
-      html: `
-        <h2>Welcome to Next Forge</h2>
-        <p>Thank you for subscribing to the newsletter. You will receive the latest updates and news.</p>
-        <p style="margin-top: 20px; font-size: 12px; color: #666;">
-          If you wish to unsubscribe, please <a href="${unsubscribeLink}">click here</a>
-        </p>
-      `,
-      headers: {
-        "List-Unsubscribe": `<${unsubscribeLink}>`,
-        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click"
+  const html = `
+    <div style="font-family: Arial, sans-serif; color: #1B1F3B; max-width: 520px;">
+      <h2 style="margin: 0 0 16px;">${subject}</h2>
+      <p>${intro}</p>
+      ${
+        packUrl
+          ? `<p style="margin: 24px 0;"><a href="${packUrl}" style="background: #0F6E62; color: #ffffff; padding: 12px 20px; border-radius: 6px; text-decoration: none; display: inline-block;">${button}</a></p>`
+          : `<p>${pending}</p>`
       }
-    });
+      <p>${outro}</p>
+      <p style="margin-top: 32px; font-size: 12px; color: #5B6077;">
+        <a href="${unsubscribeLink}" style="color: #5B6077;">${unsubscribe}</a>
+      </p>
+    </div>
+  `;
 
-    return { success: true };
-  } catch (error) {
-    console.error('Newsletter subscription failed:', error);
-    throw error;
-  }
+  return { subject, html };
 }
 
-export async function unsubscribeFromNewsletter(token: string) {
-  try {
-    await checkRateLimit();
+export async function subscribeToNewsletter(rawEmail: string, locale = "en") {
+  const client = getResend();
+  await checkRateLimit();
 
-    const email = Buffer.from(token, 'base64').toString();
-    const normalizedEmail = normalizeEmail(email);
-    const { isValid, error } = validateEmail(normalizedEmail);
-
-    if (!isValid) {
-      throw new Error(error || 'Invalid email address');
-    }
-
-    // Check if subscribed
-    const list = await resend.contacts.list({ audienceId: AUDIENCE_ID });
-    const user = list.data?.data.find((item) => item.email === normalizedEmail);
-
-    if (!user) {
-      throw new Error('This email is not subscribed to our notifications');
-    }
-
-    // Remove from audience
-    await resend.contacts.remove({
-      audienceId: AUDIENCE_ID,
-      email: normalizedEmail,
-    });
-
-    return { success: true, email: normalizedEmail };
-  } catch (error) {
-    console.error('Newsletter unsubscribe failed:', error);
-    throw error;
+  const email = normalizeEmail(rawEmail);
+  const { isValid, error } = validateEmail(email);
+  if (!isValid) {
+    throw new NewsletterInputError(error || "invalid_email_format");
   }
-} 
+
+  if (process.env.RESEND_AUDIENCE_ID) {
+    await client.contacts.create({
+      audienceId: process.env.RESEND_AUDIENCE_ID,
+      email,
+    });
+  }
+
+  const unsubscribeLink = `${siteConfig.url}${locale === "en" ? "" : `/${locale}`}/unsubscribe?token=${createUnsubscribeToken(email)}`;
+  const { subject, html } = welcomeEmail(locale, unsubscribeLink);
+
+  const { error: sendError } = await client.emails.send({
+    from: `${siteConfig.name} <${process.env.ADMIN_EMAIL}>`,
+    to: email,
+    subject,
+    html,
+    headers: {
+      "List-Unsubscribe": `<${unsubscribeLink}>`,
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+    },
+  });
+  if (sendError) {
+    throw new Error(`Resend send failed: ${sendError.message}`);
+  }
+
+  return { success: true };
+}
+
+export type UnsubscribeResult =
+  | { success: true; email: string }
+  | { success: false; reason: "invalid_token" | "error" };
+
+export async function unsubscribeFromNewsletter(token: string): Promise<UnsubscribeResult> {
+  try {
+    const email = verifyUnsubscribeToken(token);
+    if (!email) {
+      return { success: false, reason: "invalid_token" };
+    }
+
+    const client = getResend();
+    if (process.env.RESEND_AUDIENCE_ID) {
+      await client.contacts.remove({
+        audienceId: process.env.RESEND_AUDIENCE_ID,
+        email,
+      });
+    }
+    return { success: true, email };
+  } catch (error) {
+    console.error("Newsletter unsubscribe failed:", error);
+    return { success: false, reason: "error" };
+  }
+}

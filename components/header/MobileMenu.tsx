@@ -7,7 +7,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -15,12 +14,9 @@ import { Link as I18nLink } from "@/i18n/routing";
 import { HeaderLink } from "@/types/common";
 import { Menu } from "lucide-react";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 
 export default function MobileMenu() {
-  const t = useTranslations("Home");
   const tHeader = useTranslations("Header");
-
   const headerLinks: HeaderLink[] = tHeader.raw("links");
 
   return (
@@ -28,45 +24,25 @@ export default function MobileMenu() {
       <LocaleSwitcher />
       <ThemeToggle />
       <DropdownMenu>
-        <DropdownMenuTrigger className="p-2">
+        <DropdownMenuTrigger className="rounded-md p-2" aria-label={tHeader("menu")}>
           <Menu className="h-5 w-5" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-64">
-          <DropdownMenuLabel>
-            <I18nLink
-              href="/"
-              title={t("title")}
-              prefetch={true}
-              className="flex items-center space-x-1 font-bold"
-            >
-              <Image
-                alt={t("title")}
-                src="/logo.svg"
-                className="w-6 h-6"
-                width={32}
-                height={32}
-              />
-              <span className="highlight-text">{t("title")}</span>
-            </I18nLink>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
+        <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuGroup>
             {headerLinks.map((link) => (
-              <DropdownMenuItem key={link.name}>
-                <I18nLink
-                  href={link.href}
-                  title={link.name}
-                  prefetch={
-                    link.target && link.target === "_blank" ? false : true
-                  }
-                  target={link.target || "_self"}
-                  rel={link.rel || undefined}
-                >
+              <DropdownMenuItem key={link.href} asChild>
+                <I18nLink href={link.href} className="text-base">
                   {link.name}
                 </I18nLink>
               </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <I18nLink href="/free-pack" className="text-base font-semibold text-primary">
+              {tHeader("cta")}
+            </I18nLink>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
