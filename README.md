@@ -6,7 +6,7 @@ Built with Next.js 16, Tailwind CSS, next-intl and MDX. Started from the MIT-lic
 
 ## Run it locally
 
-Requires Node.js 20.9+ and pnpm.
+Requires Node.js 22 and pnpm.
 
 ```bash
 corepack enable

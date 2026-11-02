@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "packageManager": "pnpm@10.12.4",
   "engines": {
-    "node": ">=20.9"
+    "node": "22.x"
   },
   "scripts": {
     "dev": "next dev",
@@ -56,5 +56,11 @@
     "tailwindcss": "^3.4.3",
     "typescript": "^5"
   },
-  "private": true
+  "private": true,
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "unrs-resolver"
+    ]
+  }
 }
